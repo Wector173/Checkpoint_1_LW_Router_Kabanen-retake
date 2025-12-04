@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отчет по лабораторной работе - Checkpoint 1</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="org-name">Международная Академия Информационных Технологий "ИТ ХАБ"</h1>
+            <h2 class="lab-title">Checkpoint_1_LW_Router_Kabanen 2</h2>
+            
+            <div class="student-card">
+                <div class="student-info">
+                    <div class="info-label">Студент</div>
+                    <div class="info-value">Кабанен Матвей</div>
+                </div>
+                
+                <div class="student-info">
+                    <div class="info-label">Группа</div>
+                    <div class="info-value">2ЭИТ1-9.24</div>
+                </div>
+                
+                <div class="student-info">
+                    <div class="info-label">Телефон</div>
+                    <div class="info-value">7 (913) 662 12-82</div>
+                </div>
+                
+                <div class="student-info">
+                    <div class="info-label">Год выполнения</div>
+                    <div class="info-value">2025</div>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-network-wired"></i> Топология сети и цель работы</h2>
+                
+                <div class="step-container">
+                    <h3 class="step-title"><span class="step-number">1</span> Общее описание</h3>
+                    <div class="step-content">
+                        <p>В этой лабораторной работе я настроил маршрутизатор Cisco для соединения двух отдельных сетей. Основные задачи включали:</p>
+                        <ul class="custom-list">
+                            <li>Изменение hostname роутера на свою фамилию</li>
+                            <li>Настройку интерфейсов с IP-адресами, где третий октет соответствует моему порядковому номеру в группе (28)</li>
+                            <li>Настройку IP-адресов на четырех ПК</li>
+                            <li>Проверку связности между сетями</li>
+                        </ul>
+                        
+                        <div class="screenshot-container">
+                            <img src="topology.png" alt="Топология сети" class="screenshot" id="topology-img">
+                            <div class="caption">Рис. 1 - Топология сети с роутером "Кабанен", соединяющим две сети</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-tasks"></i> Подробные шаги настройки</h2>
+                
+                <div class="step-container">
+                    <h3 class="step-title"><span class="step-number">2</span> Изменение отображаемого имени на топологии</h3>
+                    <div class="step-content">
+                        <p>Первым делом я изменил отображаемое имя роутера на схеме:</p>
+                        <ol class="custom-list">
+                            <li>Дважды кликнул по роутеру на схеме в Packet Tracer</li>
+                            <li>В открывшемся окне перешел на вкладку "Config"</li>
+                            <li>В поле "Display Name" ввел "Кабанен"</li>
+                            <li>Нажал "Apply" для сохранения изменений</li>
+                        </ol>
+                        <div class="note">
+                            <strong>Примечание:</strong> Это изменение влияет только на отображение имени на схеме, но не на фактический hostname устройства.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <h3 class="step-title"><span class="step-number">3</span> Настройка hostname через командную строку</h3>
+                    <div class="step-content">
+                        <p>Для изменения фактического hostname роутера я использовал CLI (Command Line Interface):</p>
+                        <div class="command">Router> enable
+Router# configure terminal
+Router(config)# hostname Кабанен
+Кабанен(config)#</div>
+                        <p>После выполнения этих команд приглашение командной строки изменилось с "Router" на "Кабанен", что подтверждает успешное изменение hostname.</p>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <h3 class="step-title"><span class="step-number">4</span> Настройка интерфейсов роутера</h3>
+                    <div class="step-content">
+                        <p>Роутер имеет два интерфейса, каждый из которых будет служить шлюзом для своей сети. Я использовал третий октет "28", соответствующий моему порядковому номеру.</p>
+                        
+                        <p><strong>Настройка интерфейса GigabitEthernet0/0 для первой сети:</strong></p>
+                        <div class="command">Кабанен(config)# interface GigabitEthernet0/0
+Кабанен(config-if)# ip address 192.168.28.1 255.255.255.0
+Кабанен(config-if)# no shutdown
+Кабанен(config-if)# exit</div>
+                        
+                        <p><strong>Настройка интерфейса GigabitEthernet0/1 для второй сети:</strong></p>
+                        <div class="command">Кабанен(config)# interface GigabitEthernet0/1
+Кабанен(config-if)# ip address 172.16.28.1 255.255.255.0
+Кабанен(config-if)# no shutdown
+Кабанен(config-if)# exit</div>
+                        
+                        <div class="note">
+                            <strong>Важно:</strong> Команда "no shutdown" активирует интерфейс. Без этой команды интерфейс останется в административно выключенном состоянии.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <h3 class="step-title"><span class="step-number">5</span> Настройка ПК</h3>
+                    <div class="step-content">
+                        <p>В топологии четыре ПК, по два в каждой сети. Я настроил их следующим образом:</p>
+                        
+                        <table class="ip-table">
+                            <thead>
+                                <tr>
+                                    <th>Устройство</th>
+                                    <th>IP-адрес</th>
+                                    <th>Маска подсети</th>
+                                    <th>Шлюз по умолчанию</th>
+                                    <th>Подсеть</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>PC1 (левый)</td>
+                                    <td>192.168.28.10</td>
+                                    <td>255.255.255.0</td>
+                                    <td>192.168.28.1</td>
+                                    <td>Сеть 1</td>
+                                </tr>
+                                <tr>
+                                    <td>PC2 (левый)</td>
+                                    <td>192.168.28.20</td>
+                                    <td>255.255.255.0</td>
+                                    <td>192.168.28.1</td>
+                                    <td>Сеть 1</td>
+                                </tr>
+                                <tr>
+                                    <td>PC3 (правый)</td>
+                                    <td>172.16.28.10</td>
+                                    <td>255.255.255.0</td>
+                                    <td>172.16.28.1</td>
+                                    <td>Сеть 2</td>
+                                </tr>
+                                <tr>
+                                    <td>PC4 (правый)</td>
+                                    <td>172.16.28.20</td>
+                                    <td>255.255.255.0</td>
+                                    <td>172.16.28.1</td>
+                                    <td>Сеть 2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div class="note">
+                            <strong>Ключевой момент:</strong> На всех ПК обязательно нужно заполнить поле "Gateway" (шлюз) адресом соответствующего интерфейса роутера. Без этого ПК не смогут отправлять пакеты в другую сеть.
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-check-circle"></i> Проверка работоспособности</h2>
+                
+                <div class="step-container">
+                    <h3 class="step-title"><span class="step-number">6</span> Проверка состояния интерфейсов</h3>
+                    <div class="step-content">
+                        <p>После настройки я проверил состояние интерфейсов роутера:</p>
+                        <div class="command">Кабанен# show ip interface brief</div>
+                        <p>Эта команда выводит таблицу со статусами всех интерфейсов. Оба интерфейса должны иметь статус "up" и протокол "up".</p>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <h3 class="step-title"><span class="step-number">7</span> Проверка связности командой ping</h3>
+                    <div class="step-content">
+                        <p>Для проверки правильности настройки я выполнил команды ping с роутера:</p>
+                        <div class="command">Кабанен# ping 192.168.28.10
+Кабанен# ping 172.16.28.10</div>
+                        <p>Обе команды должны показать успешные ответы (процент успешных пинг-запросов должен быть 100%).</p>
+                        
+                        <div class="screenshot-container">
+                            <img src="ping.png" alt="Результат ping между двумя ПК" class="screenshot" id="ping-img">
+                            <div class="caption">Рис. 2 - Проверка связности между ПК из разных сетей</div>
+                        </div>
+                        
+                        <p>Также я проверил связность между ПК из разных сетей (например, с PC1 на PC3), что подтвердило правильную работу маршрутизации.</p>
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <h3 class="step-title"><span class="step-number">8</span> Просмотр конфигурации и сохранение</h3>
+                    <div class="step-content">
+                        <p>Для просмотра текущей конфигурации можно использовать команду:</p>
+                        <div class="command">Кабанен# show running-config</div>
+                        
+                        <div class="screenshot-container">
+                            <img src="config.png" alt="Конфигурация роутера" class="screenshot" id="config-img">
+                            <div class="caption">Рис. 3 - Конфигурация роутера "Кабанен"</div>
+                        </div>
+                        
+                        <p>После успешной проверки всех настроек я сохранил конфигурацию в энергонезависимую память:</p>
+                        <div class="command">Кабанен# copy running-config startup-config
+Кабанен# write memory</div>
+                        <p>Файл проекта был сохранен как <strong>Кабанен_роутер_4ПК_28.pkt</strong>, где "28" соответствует третьему октету всех IP-адресов.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-clipboard-check"></i> Выводы по проекту</h2>
+                
+                <div class="conclusion-box">
+                    <h3 class="conclusion-title"><i class="fas fa-graduation-cap"></i> Итоги выполнения работы</h3>
+                    <p class="conclusion-text">Информация изучена и усвоена. В ходе выполнения лабораторной работы я успешно настроил маршрутизатор Cisco для соединения двух сетей, изменил hostname на свою фамилию, назначил IP-адреса с использованием третьего октета "28" для всех устройств и проверил связность между сетями. Все поставленные задачи выполнены в полном объеме.</p>
+                    
+                    <div class="summary-box">
+                        <h4>Что было выполнено:</h4>
+                        <ul class="custom-list">
+                            <li>Настроен hostname роутера "Кабанен" через CLI</li>
+                            <li>Настроены интерфейсы GigabitEthernet0/0 (192.168.28.1/24) и GigabitEthernet0/1 (172.16.28.1/24)</li>
+                            <li>Настроены IP-адреса на 4 ПК с правильными шлюзами по умолчанию</li>
+                            <li>Проверена связность между устройствами в разных сетях</li>
+                            <li>Конфигурация сохранена в файл проекта</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p class="footer-text">Международная Академия Информационных Технологий "ИТ ХАБ"</p>
+            <p class="footer-text">Лабораторная работа: Checkpoint_1_LW_Router_Kabanen 2</p>
+            <p class="footer-text">© 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Простой скрипт для имитации загрузки изображений, если они отсутствуют
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = [
+                {id: 'topology-img', filename: 'topology.png', text: 'Топология сети'},
+                {id: 'ping-img', filename: 'ping.png', text: 'Результат ping'},
+                {id: 'config-img', filename: 'config.png', text: 'Конфигурация роутера'}
+            ];
+            
+            images.forEach(item => {
+                const img = document.getElementById(item.id);
+                if (img) {
+                    img.onerror = function() {
+                        this.src = `https://placehold.co/800x500/1e293b/0ea5e9?text=${encodeURIComponent(item.text)}&font=roboto`;
+                        this.alt = `Изображение ${item.filename} не найдено`;
+                    };
+                }
+            });
+            
+            // Добавляем плавную прокрутку для навигации
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if(targetId !== '#') {
+                        const targetElement = document.querySelector(targetId);
+                        if(targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 20,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
